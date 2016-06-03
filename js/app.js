@@ -9,8 +9,9 @@ function MainController($timeout, $rootScope, $firebaseArray, $firebaseObject) {
     vm.dashboard = $firebaseObject(vm.dashref)
     vm.working = "Yes";
     vm.displayResult = "from MainController";
-    vm.model = getFromStorage();
-
+    // vm.model = getFromStorage();
+    getFromStorage();
+    
     $rootScope.$on('adfDashboardChanged', function (e, name, model) {
         //TODO: SEND TO DB
         // var sLayout = JSON.stringify(model);
@@ -22,7 +23,11 @@ function MainController($timeout, $rootScope, $firebaseArray, $firebaseObject) {
 
     function getFromStorage() {
         // return JSON.parse(localStorage.getItem("mydashboard"));
-        // return vm.dashboard
+        vm.dashboard.$loaded(function (res) {
+            var mydashboard = res.mydashboard;
+            console.log(mydashboard)
+            vm.model = mydashboard;
+        })
     }
 
 }
